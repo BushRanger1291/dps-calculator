@@ -3,121 +3,141 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="manifest" href="manifest.json">
-    <title>BUSAMA - Maurer Expert</title>
+    <title>Expert DMS - BUSAMA & Maurer</title>
     <style>
         :root { --bg: #020617; --card: #1e293b; --accent: #22c55e; --text: #f8fafc; --dim: #94a3b8; }
-        body { font-family: 'Segoe UI', sans-serif; background: var(--bg); color: var(--text); padding: 1rem; margin: 0; line-height: 1.4; }
-        .container { background: var(--card); padding: 1.5rem; border-radius: 12px; border: 1px solid #334155; max-width: 450px; margin: auto; box-shadow: 0 20px 25px -5px rgba(0,0,0,0.5); }
-        h2 { font-size: 0.8rem; color: var(--accent); text-transform: uppercase; border-bottom: 1px solid #475569; padding-bottom: 0.5rem; margin-bottom: 1.5rem; text-align: center; letter-spacing: 2px; }
-        .field-group { margin-bottom: 1.2rem; }
-        label { display: block; font-size: 0.75rem; color: var(--accent); font-weight: bold; text-transform: uppercase; margin-bottom: 4px; }
-        .desc { font-size: 0.7rem; color: var(--dim); margin-bottom: 8px; line-height: 1.2; }
-        select, input { width: 100%; background: #0f172a; border: 1px solid #475569; padding: 12px; color: #fff; border-radius: 6px; box-sizing: border-box; font-size: 0.95rem; outline: none; }
-        .result-zone { margin-top: 1.5rem; border-radius: 10px; padding: 1.5rem; text-align: center; border: 2px solid #334155; transition: all 0.3s; }
-        .score-big { font-size: 3.5rem; font-weight: 800; line-height: 1; margin: 5px 0; }
-        .level-tag { font-size: 1.1rem; font-weight: bold; text-transform: uppercase; margin-top: 10px; display: block; }
-        .resources { font-size: 0.85rem; color: #fff; margin-top: 10px; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 10px; text-align: left; }
-        .lvl-1 { border-color: #22c55e; background: rgba(34, 197, 94, 0.1); color: #4ade80; }
-        .lvl-2 { border-color: #eab308; background: rgba(234, 179, 8, 0.1); color: #fde047; }
-        .lvl-3 { border-color: #f97316; background: rgba(249, 115, 22, 0.1); color: #fb923c; }
-        .lvl-4 { border-color: #ef4444; background: rgba(239, 68, 68, 0.1); color: #f87171; }
+        body { font-family: 'Segoe UI', Tahoma, sans-serif; background: var(--bg); color: var(--text); padding: 1rem; margin: 0; }
+        .container { background: var(--card); padding: 1.5rem; border-radius: 12px; border: 1px solid #334155; max-width: 500px; margin: auto; box-shadow: 0 25px 50px -12px rgba(0,0,0,0.5); }
+        h2 { font-size: 0.9rem; color: var(--accent); text-transform: uppercase; border-bottom: 1px solid #475569; padding-bottom: 10px; margin-bottom: 20px; text-align: center; letter-spacing: 2px; }
+        .section-title { font-size: 0.7rem; color: var(--accent); font-weight: bold; margin: 15px 0 5px 0; text-transform: uppercase; display: flex; align-items: center; }
+        .section-title::after { content: ""; flex: 1; height: 1px; background: #334155; margin-left: 10px; }
+        label { display: block; font-size: 0.75rem; color: var(--text); font-weight: 600; margin-bottom: 4px; }
+        .desc { font-size: 0.65rem; color: var(--dim); margin-bottom: 8px; line-height: 1.2; }
+        select, input { width: 100%; background: #0f172a; border: 1px solid #475569; padding: 10px; color: #fff; border-radius: 6px; box-sizing: border-box; font-size: 0.9rem; outline: none; margin-bottom: 10px; }
+        .result-zone { margin-top: 20px; border-radius: 12px; padding: 20px; border: 2px solid #334155; transition: all 0.3s; }
+        .score-row { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 10px; margin-bottom: 15px; }
+        .score-big { font-size: 3rem; font-weight: 800; line-height: 1; }
+        .detail-grid { display: grid; grid-template-columns: 1fr; gap: 10px; text-align: left; font-size: 0.85rem; }
+        .detail-item { background: rgba(0,0,0,0.2); padding: 10px; border-radius: 6px; border-left: 3px solid var(--accent); }
+        .detail-title { font-size: 0.65rem; color: var(--dim); text-transform: uppercase; font-weight: bold; margin-bottom: 4px; }
+        .lvl-1 { border-color: #22c55e; background: rgba(34, 197, 94, 0.05); }
+        .lvl-2 { border-color: #eab308; background: rgba(234, 179, 8, 0.05); }
+        .lvl-3 { border-color: #f97316; background: rgba(249, 115, 22, 0.05); }
+        .lvl-4 { border-color: #ef4444; background: rgba(239, 68, 68, 0.05); }
     </style>
 </head>
 <body>
 
 <div class="container">
-    <h2>DMS - FORMULE DE MAURER</h2>
+    <h2>DMS EXPERT - RÉGION 2</h2>
 
-    <div class="field-group">
-        <label>1. Effectif maximum (S)</label>
-        <div class="desc">Nombre total de personnes attendues.</div>
-        <input type="number" id="inputS" placeholder="Ex: 1000" oninput="run()">
-    </div>
+    <div class="section-title">Données de base</div>
+    <label>Effectif max simultané (S)</label>
+    <input type="number" id="S" placeholder="Ex: 5000" oninput="run()">
 
-    <div class="field-group">
-        <label>2. Type de Public (B)</label>
-        <div class="desc">Profil dominant et comportement.</div>
-        <select id="selectB" onchange="run()">
-            <option value="1">Calme : Musées, expositions, théâtre.</option>
-            <option value="2">Moyen : Fêtes village, sport amateur.</option>
-            <option value="3">Agité : Rock/Techno, Nuit, Alcool.</option>
-        </select>
-    </div>
+    <label>Type de Public (B)</label>
+    <select id="B" onchange="run()">
+        <option value="1">CALME : Assis, foire, exposition</option>
+        <option value="2">MOYEN : Sport amateur, fête populaire, concert varié</option>
+        <option value="3">AGITÉ : Rock, Techno, Nuit, Forte alcoolisation</option>
+    </select>
 
-    <div class="field-group">
-        <label>3. Potentiel de Danger (P)</label>
-        <div class="desc">Risques liés à l'activité.</div>
-        <select id="selectP" onchange="run()">
-            <option value="1">Faible : Conférences, cérémonies.</option>
-            <option value="2">Moyen : Carnavals, marathons.</option>
-            <option value="3">Élevé : Sports combat, moteur, VIP.</option>
-        </select>
-    </div>
+    <div class="section-title">Risques & Environnement</div>
+    <label>Potentiel de Danger (P)</label>
+    <select id="P" onchange="run()">
+        <option value="1">FAIBLE : Conférence, repas, théâtre</option>
+        <option value="2">MOYEN : Carnaval, cortège, marathon, cyclisme</option>
+        <option value="3">ÉLEVÉ : Combat, moteur, VIP, pyrotechnie</option>
+    </select>
 
-    <div class="field-group">
-        <label>4. Environnement & Accès (I)</label>
-        <div class="desc">Configuration du terrain.</div>
-        <select id="selectI" onchange="run()">
-            <option value="0.5">Facile : Accès dégagés, plaine.</option>
-            <option value="1.0">Limité : Salles closes, forêt.</option>
-            <option value="1.5">Difficile : Montagne, foule dense.</option>
-        </select>
-    </div>
+    <label>Infrastructure / Accès (I)</label>
+    <select id="I" onchange="run()">
+        <option value="0.5">FACILE : Zone plaine, accès 144 dégagés</option>
+        <option value="1.0">LIMITÉ : Salles closes, vieille ville, forêt</option>
+        <option value="1.5">DIFFICILE : Montagne, foule compacte, zone bloquée</option>
+    </select>
+
+    <div class="section-title">Facteurs Aggravants (Hausser)</div>
+    <label>Conditions Météo</label>
+    <select id="M" onchange="run()">
+        <option value="0">Standard / Climatisation</option>
+        <option value="2">Canicule (>30°C) ou Froid extrême</option>
+    </select>
 
     <div id="resBox" class="result-zone">
-        <div style="font-size: 0.65rem; text-transform: uppercase; opacity: 0.8;">Points Maurer</div>
-        <div id="scoreDisplay" class="score-big">0.0</div>
-        <div id="levelDisplay" class="level-tag">En attente</div>
-        <div id="resDisplay" class="resources">Veuillez saisir l'effectif.</div>
+        <div class="score-row">
+            <div>
+                <div style="font-size: 0.6rem; text-transform: uppercase; opacity: 0.7;">Score Maurer</div>
+                <div id="score" class="score-big">0.0</div>
+            </div>
+            <div id="lvlName" style="font-weight: 800; text-transform: uppercase; text-align: right; font-size: 0.9rem;">Saisie...</div>
+        </div>
+
+        <div class="detail-grid">
+            <div class="detail-item">
+                <div class="detail-title">Personnel requis</div>
+                <div id="pers">-</div>
+            </div>
+            <div class="detail-item">
+                <div class="detail-title">Infrastructure</div>
+                <div id="infra">-</div>
+            </div>
+            <div class="detail-item">
+                <div class="detail-title">Estimation Patients (Stat.)</div>
+                <div id="pat">-</div>
+            </div>
+        </div>
     </div>
 </div>
 
 <script>
     function run() {
-        // Récupération des valeurs avec sécurité
-        const valS = parseFloat(document.getElementById('inputS').value) || 0;
-        const B = parseFloat(document.getElementById('selectB').value);
-        const P = parseFloat(document.getElementById('selectP').value);
-        const I = parseFloat(document.getElementById('selectI').value);
+        const valS = parseFloat(document.getElementById('S').value) || 0;
+        const B = parseFloat(document.getElementById('B').value);
+        const P = parseFloat(document.getElementById('P').value);
+        const I = parseFloat(document.getElementById('I').value);
+        const M = parseFloat(document.getElementById('M').value);
 
-        const S = valS / 1000;
-        const pts = (S * B) + (P * I);
-
-        // Récupération des zones d'affichage
-        const scoreDiv = document.getElementById('scoreDisplay');
+        const score = ((valS / 1000) * B) + (P * I) + M;
+        
         const box = document.getElementById('resBox');
-        const levelDiv = document.getElementById('levelDisplay');
-        const resDiv = document.getElementById('resDisplay');
-
-        scoreDiv.innerText = pts.toFixed(1);
-        box.className = "result-zone"; // Reset des couleurs
+        document.getElementById('score').innerText = score.toFixed(1);
+        box.className = "result-zone";
 
         if (valS <= 0) {
-            levelDiv.innerText = "Saisie requise";
-            resDiv.innerText = "Veuillez saisir l'effectif.";
+            document.getElementById('lvlName').innerText = "Attente";
             return;
         }
 
-        if (pts <= 1.5) {
+        let n = "", p = "", inf = "", patients = Math.ceil(valS * 0.002);
+
+        if (score <= 1.5) {
             box.classList.add('lvl-1');
-            levelDiv.innerText = "Niveau 1 (Risque Faible)";
-            resDiv.innerHTML = "<b>Moyens :</b> Binôme de secouristes (BLS-AED).";
-        } else if (pts <= 13) {
+            n = "Niveau 1 (Faible)";
+            p = "1 Binôme de samaritains / secouristes.";
+            inf = "Sac d'intervention, radio, défibrillateur (AED).";
+        } else if (score <= 13) {
             box.classList.add('lvl-2');
-            levelDiv.innerText = "Niveau 2 (Risque Moyen)";
-            resDiv.innerHTML = "<b>Moyens :</b> Poste de secours (4 pers.) + 1 Chef de poste.";
-        } else if (pts <= 25) {
+            n = "Niveau 2 (Moyen)";
+            p = "1 Poste de secours (min. 4 pers) + Chef de poste.";
+            inf = "Local identifié/Tente, 1 lit de soin, O2, petit matériel.";
+        } else if (score <= 25) {
             box.classList.add('lvl-3');
-            levelDiv.innerText = "Niveau 3 (Risque Élevé)";
-            resDiv.innerHTML = "<b>Moyens :</b> Poste de secours renforcé + 1 Chef d'intervention.";
+            n = "Niveau 3 (Élevé)";
+            p = "Poste renforcé (6-10 pers), Chef d'intervention, Infirmière (option).";
+            inf = "Structure médicalisée, zone de triage, min. 2 lits.";
         } else {
             box.classList.add('lvl-4');
-            levelDiv.innerText = "Niveau 4+ (Risque Majeur)";
-            resDiv.innerHTML = "<b>Moyens :</b> PC Sanitaire mobile, Médecin, Logistique lourde.";
+            n = "Niveau 4 (Majeur)";
+            p = "PC Sanitaire, Médecin, plusieurs binômes, Logistique.";
+            inf = "Hôpital de campagne, liaison radio dédiée, transmissions PC.";
         }
+
+        document.getElementById('lvlName').innerText = n;
+        document.getElementById('pers').innerText = p;
+        document.getElementById('infra').innerText = inf;
+        document.getElementById('pat').innerText = "~ " + (patients < 2 ? 2 : patients) + " prises en charge prévisibles.";
     }
 </script>
-
 </body>
 </html>
