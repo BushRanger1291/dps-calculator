@@ -1,0 +1,9 @@
+{
+  "name": "DPS Maurer Expert",
+  "short_name": "DPS Maurer",
+  "start_url": "index.html",
+  "display": "standalone",
+  "background_color": "#020617",
+  "theme_color": "#22c55e",
+  "icons": [{ "src": "https://cdn-icons-png.flaticon.com/512/883/883356.png", "sizes": "512x512", "type": "image/png" }]
+}

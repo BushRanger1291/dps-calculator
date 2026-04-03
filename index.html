@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="manifest" href="manifest.json">
+    <title>BUSAMA - Maurer Expert</title>
+    <style>
+        :root { --bg: #020617; --card: #1e293b; --accent: #22c55e; --text: #f8fafc; --dim: #94a3b8; }
+        body { font-family: 'Segoe UI', sans-serif; background: var(--bg); color: var(--text); padding: 1rem; margin: 0; line-height: 1.4; }
+        .container { background: var(--card); padding: 1.5rem; border-radius: 12px; border: 1px solid #334155; max-width: 450px; margin: auto; box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.5); }
+        h2 { font-size: 0.8rem; color: var(--accent); text-transform: uppercase; border-bottom: 1px solid #475569; padding-bottom: 0.5rem; margin-bottom: 1.5rem; text-align: center; letter-spacing: 2px; }
+        
+        .field-group { margin-bottom: 1.2rem; }
+        label { display: block; font-size: 0.75rem; color: var(--accent); font-weight: bold; text-transform: uppercase; margin-bottom: 4px; }
+        .desc { font-size: 0.7rem; color: var(--dim); margin-bottom: 8px; line-height: 1.2; }
+        
+        select, input { width: 100%; background: #0f172a; border: 1px solid #475569; padding: 12px; color: #fff; border-radius: 6px; box-sizing: border-box; font-size: 0.95rem; outline: none; -webkit-appearance: none; }
+        select:focus { border-color: var(--accent); }
+
+        .result-zone { margin-top: 1.5rem; border-radius: 10px; padding: 1.5rem; text-align: center; border: 2px solid #334155; transition: all 0.3s; }
+        .score-big { font-size: 3.5rem; font-weight: 800; line-height: 1; margin: 5px 0; }
+        .level-tag { font-size: 1.1rem; font-weight: bold; text-transform: uppercase; margin-top: 10px; display: block; }
+        .resources { font-size: 0.85rem; color: #fff; margin-top: 10px; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 10px; text-align: left; }
+
+        /* États de couleur dynamiques */
+        .lvl-1 { border-color: #22c55e; background: rgba(34, 197, 94, 0.1); color: #4ade80; }
+        .lvl-2 { border-color: #eab308; background: rgba(234, 179, 8, 0.1); color: #fde047; }
+        .lvl-3 { border-color: #f97316; background: rgba(249, 115, 22, 0.1); color: #fb923c; }
+        .lvl-4 { border-color: #ef4444; background: rgba(239, 68, 68, 0.1); color: #f87171; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h2>DMS - FORMULE DE MAURER</h2>
+
+    <div class="field-group">
+        <label>1. Effectif maximum (S)</label>
+        <div class="desc">Nombre total de personnes attendues (Public + Staff).</div>
+        <input type="number" id="S" placeholder="Ex: 1200" oninput="run()">
+    </div>
+
+    <div class="field-group">
+        <label>2. Type de Public (B)</label>
+        <div class="desc">Profil dominant et comportement prévisible.</div>
+        <select id="B" onchange="run()">
+            <option value="1">Calme : Musées, expositions, théâtre, assis.</option>
+            <option value="2">Moyen : Fêtes de village, sport amateur, foires.</option>
+            <option value="3">Agité : Concerts Rock/Techno, événements de nuit, forte consommation d'alcool.</option>
+        </select>
+    </div>
+
+    <div class="field-group">
+        <label>3. Potentiel de Danger (P)</label>
+        <div class="desc">Risques liés à l'activité elle-même.</div>
+        <select id="P" onchange="run()">
+            <option value="1">Faible : Conférences, cérémonies religieuses.</option>
+            <option value="2">Moyen : Carn
