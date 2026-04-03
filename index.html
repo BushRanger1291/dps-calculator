@@ -3,6 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#22c55e">
+    <link rel="apple-touch-icon" href="https://cdn-icons-png.flaticon.com/512/883/883356.png">
+
     <title>Expert DMS - BUSAMA & Maurer</title>
     <style>
         :root { --bg: #020617; --card: #1e293b; --accent: #22c55e; --text: #f8fafc; --dim: #94a3b8; }
@@ -137,6 +142,11 @@
         document.getElementById('pers').innerText = p;
         document.getElementById('infra').innerText = inf;
         document.getElementById('pat').innerText = "~ " + (patients < 2 ? 2 : patients) + " prises en charge prévisibles.";
+    }
+
+    // Enregistrement obligatoire du Service Worker pour l'installation
+    if ('serviceWorker' in navigator) {
+        navigator.serviceWorker.register('sw.js');
     }
 </script>
 </body>
