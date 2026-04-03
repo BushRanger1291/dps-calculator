@@ -8,22 +8,16 @@
     <style>
         :root { --bg: #020617; --card: #1e293b; --accent: #22c55e; --text: #f8fafc; --dim: #94a3b8; }
         body { font-family: 'Segoe UI', sans-serif; background: var(--bg); color: var(--text); padding: 1rem; margin: 0; line-height: 1.4; }
-        .container { background: var(--card); padding: 1.5rem; border-radius: 12px; border: 1px solid #334155; max-width: 450px; margin: auto; box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.5); }
+        .container { background: var(--card); padding: 1.5rem; border-radius: 12px; border: 1px solid #334155; max-width: 450px; margin: auto; box-shadow: 0 20px 25px -5px rgba(0,0,0,0.5); }
         h2 { font-size: 0.8rem; color: var(--accent); text-transform: uppercase; border-bottom: 1px solid #475569; padding-bottom: 0.5rem; margin-bottom: 1.5rem; text-align: center; letter-spacing: 2px; }
-        
         .field-group { margin-bottom: 1.2rem; }
         label { display: block; font-size: 0.75rem; color: var(--accent); font-weight: bold; text-transform: uppercase; margin-bottom: 4px; }
         .desc { font-size: 0.7rem; color: var(--dim); margin-bottom: 8px; line-height: 1.2; }
-        
-        select, input { width: 100%; background: #0f172a; border: 1px solid #475569; padding: 12px; color: #fff; border-radius: 6px; box-sizing: border-box; font-size: 0.95rem; outline: none; -webkit-appearance: none; }
-        select:focus { border-color: var(--accent); }
-
+        select, input { width: 100%; background: #0f172a; border: 1px solid #475569; padding: 12px; color: #fff; border-radius: 6px; box-sizing: border-box; font-size: 0.95rem; outline: none; }
         .result-zone { margin-top: 1.5rem; border-radius: 10px; padding: 1.5rem; text-align: center; border: 2px solid #334155; transition: all 0.3s; }
         .score-big { font-size: 3.5rem; font-weight: 800; line-height: 1; margin: 5px 0; }
         .level-tag { font-size: 1.1rem; font-weight: bold; text-transform: uppercase; margin-top: 10px; display: block; }
         .resources { font-size: 0.85rem; color: #fff; margin-top: 10px; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 10px; text-align: left; }
-
-        /* États de couleur dynamiques */
         .lvl-1 { border-color: #22c55e; background: rgba(34, 197, 94, 0.1); color: #4ade80; }
         .lvl-2 { border-color: #eab308; background: rgba(234, 179, 8, 0.1); color: #fde047; }
         .lvl-3 { border-color: #f97316; background: rgba(249, 115, 22, 0.1); color: #fb923c; }
@@ -37,23 +31,93 @@
 
     <div class="field-group">
         <label>1. Effectif maximum (S)</label>
-        <div class="desc">Nombre total de personnes attendues (Public + Staff).</div>
-        <input type="number" id="S" placeholder="Ex: 1200" oninput="run()">
+        <div class="desc">Nombre total de personnes attendues.</div>
+        <input type="number" id="inputS" placeholder="Ex: 1000" oninput="run()">
     </div>
 
     <div class="field-group">
         <label>2. Type de Public (B)</label>
-        <div class="desc">Profil dominant et comportement prévisible.</div>
-        <select id="B" onchange="run()">
-            <option value="1">Calme : Musées, expositions, théâtre, assis.</option>
-            <option value="2">Moyen : Fêtes de village, sport amateur, foires.</option>
-            <option value="3">Agité : Concerts Rock/Techno, événements de nuit, forte consommation d'alcool.</option>
+        <div class="desc">Profil dominant et comportement.</div>
+        <select id="selectB" onchange="run()">
+            <option value="1">Calme : Musées, expositions, théâtre.</option>
+            <option value="2">Moyen : Fêtes village, sport amateur.</option>
+            <option value="3">Agité : Rock/Techno, Nuit, Alcool.</option>
         </select>
     </div>
 
     <div class="field-group">
         <label>3. Potentiel de Danger (P)</label>
-        <div class="desc">Risques liés à l'activité elle-même.</div>
-        <select id="P" onchange="run()">
-            <option value="1">Faible : Conférences, cérémonies religieuses.</option>
-            <option value="2">Moyen : Carn
+        <div class="desc">Risques liés à l'activité.</div>
+        <select id="selectP" onchange="run()">
+            <option value="1">Faible : Conférences, cérémonies.</option>
+            <option value="2">Moyen : Carnavals, marathons.</option>
+            <option value="3">Élevé : Sports combat, moteur, VIP.</option>
+        </select>
+    </div>
+
+    <div class="field-group">
+        <label>4. Environnement & Accès (I)</label>
+        <div class="desc">Configuration du terrain.</div>
+        <select id="selectI" onchange="run()">
+            <option value="0.5">Facile : Accès dégagés, plaine.</option>
+            <option value="1.0">Limité : Salles closes, forêt.</option>
+            <option value="1.5">Difficile : Montagne, foule dense.</option>
+        </select>
+    </div>
+
+    <div id="resBox" class="result-zone">
+        <div style="font-size: 0.65rem; text-transform: uppercase; opacity: 0.8;">Points Maurer</div>
+        <div id="scoreDisplay" class="score-big">0.0</div>
+        <div id="levelDisplay" class="level-tag">En attente</div>
+        <div id="resDisplay" class="resources">Veuillez saisir l'effectif.</div>
+    </div>
+</div>
+
+<script>
+    function run() {
+        // Récupération des valeurs avec sécurité
+        const valS = parseFloat(document.getElementById('inputS').value) || 0;
+        const B = parseFloat(document.getElementById('selectB').value);
+        const P = parseFloat(document.getElementById('selectP').value);
+        const I = parseFloat(document.getElementById('selectI').value);
+
+        const S = valS / 1000;
+        const pts = (S * B) + (P * I);
+
+        // Récupération des zones d'affichage
+        const scoreDiv = document.getElementById('scoreDisplay');
+        const box = document.getElementById('resBox');
+        const levelDiv = document.getElementById('levelDisplay');
+        const resDiv = document.getElementById('resDisplay');
+
+        scoreDiv.innerText = pts.toFixed(1);
+        box.className = "result-zone"; // Reset des couleurs
+
+        if (valS <= 0) {
+            levelDiv.innerText = "Saisie requise";
+            resDiv.innerText = "Veuillez saisir l'effectif.";
+            return;
+        }
+
+        if (pts <= 1.5) {
+            box.classList.add('lvl-1');
+            levelDiv.innerText = "Niveau 1 (Risque Faible)";
+            resDiv.innerHTML = "<b>Moyens :</b> Binôme de secouristes (BLS-AED).";
+        } else if (pts <= 13) {
+            box.classList.add('lvl-2');
+            levelDiv.innerText = "Niveau 2 (Risque Moyen)";
+            resDiv.innerHTML = "<b>Moyens :</b> Poste de secours (4 pers.) + 1 Chef de poste.";
+        } else if (pts <= 25) {
+            box.classList.add('lvl-3');
+            levelDiv.innerText = "Niveau 3 (Risque Élevé)";
+            resDiv.innerHTML = "<b>Moyens :</b> Poste de secours renforcé + 1 Chef d'intervention.";
+        } else {
+            box.classList.add('lvl-4');
+            levelDiv.innerText = "Niveau 4+ (Risque Majeur)";
+            resDiv.innerHTML = "<b>Moyens :</b> PC Sanitaire mobile, Médecin, Logistique lourde.";
+        }
+    }
+</script>
+
+</body>
+</html>
